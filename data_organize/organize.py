@@ -42,6 +42,7 @@ for stim,s_end,s_start,t_end,t_start in zip(*(labels[n] for n in labels)):
     # store stimulus in first row
     stimulus = np.zeros((1508))
     stimulus[stim_start:stim_end] = 1
+    stimulus[stim_end:] = 2
     timeseries[0,:] = stimulus[time_start:time_end] 
 
     # for each time series obtain the portion pertaining to oder
