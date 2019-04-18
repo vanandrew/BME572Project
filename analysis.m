@@ -35,7 +35,9 @@ labels = {...
 [coeff, score, latent] = pca(diff);
 
 % plot score for each observation
-for i=1:12
-    figure;
-    plot(1:11,score(i,:));
+figure;
+for i=1:2:12
+scatter3(score(i:i+1,1),score(i:i+1,2),score(i:i+1,3))
+hold on;
 end
+legend(labels(1:2:12));
