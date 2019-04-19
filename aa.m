@@ -22,9 +22,6 @@ diff(11,:) = Corr_diff_o_MH02(logical(tril(ones(922,922),1)));
 diff(12,:) = Corr_diff_o_MH04(logical(tril(ones(922,922),1)));
 diff(13,:) = Corr_diff_o_PO(logical(tril(ones(922,922),1)));
 
-% pca
-[~, score, ~] = pca(diff);
-
 % create labels
 labels = {...
            '1o3o';'1o3o';...
@@ -36,11 +33,18 @@ labels = {...
            'PO';
          };
 
-figure;
-for i=1:2:12
-    scatter3(score(i:1+i,1),score(i:1+i,2),score(i:1+i,3));
-    hold on;
+% do pca
+[coeff, score, latent] = pca(diff);
+figure('Position',[0,0,1000,500]);
+scatter(score(1:2:12,1),score(1:2:12,2));
+hold on;
+scatter(score(2:2:12,1),score(2:2:12,2));
+scatter(score(13,1),score(13,2));
+for i=1:13
+   text(score(i,1),score(i,2),labels{i},'FontSize',6);
 end
-scatter3(score(13,1),score(13,2),score(13,3));
-idx = kmeans(score,2);
-legend(labels(1:2:13));
+
+xlabel('First Principal Component');
+ylabel('Second Principal Component');
+legend({'02 Conc.','04 Conc.','PO'},'Location','southwest');
+title('PCA on Corrmat Diff. (Stim - PreStim)')
