@@ -19,25 +19,42 @@ diff(:,9) = (o_EB02_stim - o_EB02_prestim);
 diff(:,10) = (o_EB04_stim - o_EB04_prestim);
 diff(:,11) = (o_MH02_stim - o_MH02_prestim);
 diff(:,12) = (o_MH04_stim - o_MH04_prestim);
+diff(:,13) = (o_PO_stim - o_PO_prestim);
 diff = diff'; % transpose to get oders as observations and rois as features
 
 % create labels
 labels = {...
-           '1o3o';'1o3o';...
-           'Acet';'Acet';...
-           'Bzald';'Bzald';...
-           'EA';'EA';...
-           'EB';'EB';...
-           'MH';'MH';...
+           '1o3o02';'1o3o04';...
+           'Acet04';'Acet04';...
+           'Bzald04';'Bzald04';...
+           'EA02';'EA04';...
+           'EB02';'EB04';...
+           'MH02';'MH04';...
+           'PO';
          };
 
 % do pca
 [coeff, score, latent] = pca(diff);
-
-% plot score for each observation
-figure;
-for i=1:2:12
-scatter3(score(i:i+1,1),score(i:i+1,2),score(i:i+1,3))
+figure('Position',[0,0,1000,500]);
+scatter(score(1:2:12,1),score(1:2:12,2));
 hold on;
+scatter(score(2:2:12,1),score(2:2:12,2));
+scatter(score(13,1),score(13,2));
+for i=1:13
+   text(score(i,1),score(i,2),labels{i},'FontSize',6);
 end
-legend(labels(1:2:12));
+
+% fit linear model with least squares solution
+
+% labels 1 = high conc., -1 = low conc.
+lbl = [1;-1;1;-1;1;-1;1;-1;1;-1;1;-1;-1];
+w = pinv(score(:,1:2))*lbl;
+x1 = -600:1:1000;
+x2 = -w(1)*x1/w(2);
+plot(x1,x2);
+xlim([-600,1000])
+ylim([-300,400]);
+xlabel('First Principal Component');
+ylabel('Second Principal Component');
+legend({'02 Conc.','04 Conc.','PO'})
+title('PCA on Avg. Power Difference (Stim - PreStim) with LMS linear classifier')

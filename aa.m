@@ -33,26 +33,14 @@ labels = {...
            'EA';'EA';...
            'EB';'EB';...
            'MH';'MH';...
+           'PO';
          };
-     
-% plot score for each observation
-figure;
-for i=1:2:12
-scatter(score(i:i+1,1),score(i:i+1,2))
-hold on;
-end
-%legend(labels(1:2:12));
 
 figure;
 for i=1:2:12
-scatter(score(i:i+1,2),score(i:i+1,3))
-hold on;
+    scatter3(score(i:1+i,1),score(i:1+i,2),score(i:1+i,3));
+    hold on;
 end
-%legend(labels(1:2:12));
-
-figure;
-for i=1:2:12
-scatter(score(i:i+1,1),score(i:i+1,3))
-hold on;
-end
-%legend(labels(1:2:12));
+scatter3(score(13,1),score(13,2),score(13,3));
+idx = kmeans(score,2);
+legend(labels(1:2:13));
