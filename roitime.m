@@ -15,14 +15,42 @@ for i=1:numel(var_list)
    end
 end
 
+% create labels
+labels = {...
+           '1o3o02';'1o3o04';...
+           'Acet02';'Acet04';...
+           'Bzald02';'Bzald04';...
+           'EA02';'EA04';...
+           'EB02';'EB04';...
+           'MH02';'MH04';...
+           'PO'; 'PO'
+         };
+
 % get mean time series of each oder
 mean_oder_series = squeeze(mean(oder_tensor,1))';
 
-% do pca
-[~, score] = pca(mean_oder_series);
+% plot some rois
 figure;
-scatter3(score(1:2:12,1),score(1:2:12,2),score(1:2:12,3));
+plot(squeeze(oder_tensor(44,:,13)));
 hold on;
-scatter3(score(2:2:12,1),score(2:2:12,2),score(2:2:12,3));
-scatter3(score(13,1),score(13,2),score(13,3));
-idx = kmeans(score,2);
+plot(squeeze(oder_tensor(23,:,6)));
+plot(squeeze(oder_tensor(35,:,7)));
+plot(squeeze(oder_tensor(75,:,1)));
+xlabel('# Samples'); ylabel('Calcium Response');
+title('Selected ROIs')
+
+% plot mean time series for each oder
+figure;
+plot(mean_oder_series([1:2:12,13],:)');
+ylim([160,240]);
+xlabel('# Sample'); ylabel('Mean Calcium Response');
+title('Mean Time Series of High Concentration Oders')
+legend(labels([1:2:12,13]));
+
+% plot mean time series for each oder
+figure;
+plot(mean_oder_series([2:2:12, 13],:)');
+ylim([160,240]);
+xlabel('# Sample'); ylabel('Mean Calcium Reponse');
+title('Mean Time Series of Low Concentration Oders')
+legend(labels([2:2:12,13]));
