@@ -32,9 +32,18 @@ labels = {...
            'MH02';'MH04';...
            'PO';
          };
-
+     
 % do pca
-[coeff, score, latent] = pca(diff);
+[coeff, score, latent,~,explained] = pca(diff);
+
+% plot scree plot
+figure;
+scatter(1:12,explained);
+title('Principal Component Variances (Avg. Power Difference)');
+xlabel('Principal Component');
+ylabel('% Variance');
+
+% plot principal components
 figure('Position',[0,0,1000,500]);
 scatter(score(1:2:12,1),score(1:2:12,2));
 hold on;
